@@ -1,11 +1,159 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bibleo</title>
+    <meta name="description" content="Bibleo is an online room for reading. Featuring an online book shelf to store and showcase your e-books, Bibleo offers a pleasant and serene environment for you to read books. Sign up and become a bibleophile right now!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="logo"><img src="/images/bibleo-svg.png" alt="Bibleo Logo" height="100%"></div>
+        <div class="legend">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/#overview">Overview</a></li>
+                <li class="hero"><a href="/dashboard">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section id="home">
+        <div class="container">
+            <div class="text-box">
+                <span>“Wherever I am, if I've got that book with me, I've got a place I can go and be happy.”</span><br><br>
+                <div class="auth">~ J.K. Rowling</div>
+            </div>
+            <div class="buttons">
+                <ul>
+
+                    <a href="/#overview">
+                        <li>Take a tour</li>
+                    </a>
+
+                    <a href="/users/register">
+                        <li class="hero">Get Started</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="container right"></div>
+    </section>
+
+    <section id="about">
+        <h2 class="hidden">ABOUT</h2>
+        <div class="container">
+            <img src="/images/shelf2.png" height="80%" alt="">
+        </div>
+        <div class="container about">
+            <h2>ABOUT</h2>
+            <div class="about-text">
+                <span>Bibleo</span> is an online platform to that offers you a personalized virtual bookshelf to store the metadata of your e-books in a pleasant and serene enviroment. Built with a minimalist UI, Bibleo offers you an inventory where you can not only add your e-book metadata but also categorize them as well as add tags.
+            </div>
+        </div>
+    </section>
+
+    <section id="overview">
+        <h2>Overview</h2>
+        <div class="overview">
+            <div class="group">
+                <div class="card">
+                    <img src="/images/upload.svg" height="80%" alt="">
+                </div>
+                <div class="card-long">
+                    <h4>Upload new books on the bookshelf</h4>
+                    <div class="text">The bookshelf of Bibleo will be your most friendly companion. You can register as many e-books as you wish. While adding new books to your bookshelf, you are required to add a hyperlink to the e-book so as to open the e-book in a single click from your library. If you have the e-books stored locally in your system, it is recommended that you can use Google Drive / Dropbox to store e-books and link them up in Bibleo!
+                    </div>
+                </div>
+            </div>
+            <div class="group">
+                <div class="card-long">
+                    <h4>Grouping books and adding tags</h4>
+                    <div class="text">
+                        Bibleo offers you the feature to add your own personalized tags to your uploaded books and to group them together in
+                        <span>collections</span> viz. Some of the built-in collections are
+                        <ul>
+                            <li>
+                                <ion-icon name="bookmark-outline"></ion-icon>
+                                <div class="icon-text">Favourites</div>
+                            </li>
+                            <li>
+                                <ion-icon name="time-outline"></ion-icon>
+                                <div class="icon-text">To Read</div>
+                            </li>
+                            <li>
+                                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                                <div class="icon-text">Have Read</div>
+                            </li>
+                            <li>
+                                <ion-icon name="book-outline"></ion-icon>
+                                <div class="icon-text">Reading now</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card"><img src="/images/pick.svg" height="80%" alt=""></div>
+            </div>
+            <div class="group">
+                <div class="card"><img src="/images/book.svg" height="80%" alt=""></div>
+                <div class="card-long">
+                    <h4>Focused Reading</h4>
+                    <div class="text">
+                        Bibleo has a very minimalist touch of UI and the UX has been designed so as to minimize any distractions. The clean, fresh design will help you to disconnect from the outer world and reconnect with yourself. Bibleo is built for the love of reading and I have taken much care to improve the reading environment.<br><br>
+                        <div class="center">Hocus Focus!</div>
+                    </div>
+                </div>
+            </div>
+            <div class="group">
+                <div class="card-long">
+                    <h4>Share your library with the world</h4>
+                    <div class="text">
+                        Every person has a unique book collection, which is one of his / her most priceless and precious possession. Bibleo helps you share your book library with the world and connect with other readers with similar taste in books.<br><br> Register yourself now and start creating your own library!
+                    </div>
+                </div>
+                <div class="card"><img src="/images/tour.svg" height="80%" alt=""></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="foot-text"><a href="https://www.github.com/singhayushh" target="_blank">&copy;singhayushh</a></div>
+        <a href="https://www.github.com/singhayushh" target="_blank"><img src="/images/cover-sm.png" height="50px" alt=""></a>
+        <div class="foot-icons">
+            <ul>
+                <li>
+                    <a href="mailto:coding.ayush@gmail.com" target="_blank">
+                        <ion-icon name="mail-outline"></ion-icon>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/_singhayushh/" target="_blank">
+                        <ion-icon name="logo-instagram"></ion-icon>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/singhayushh/" target="_blank">
+                        <ion-icon name="logo-linkedin"></ion-icon>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.github.com/singhayushh" target="_blank">
+                        <ion-icon name="logo-github"></ion-icon>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <script src="/javascripts/script.js"></script>
+</body>
+
 </html>

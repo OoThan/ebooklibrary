@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bibleo | <%= title %></title>
+    <meta name="description" content="Bibleo is an online room for reading. Featuring an online book shelf to store and showcase your e-books, Bibleo offers a pleasant and serene environment for you to read books. Sign up and become a bibleophile right now!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;900&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard" onload="startTime()">
+
+    <div class="mnu">
+        <div class="menu-btn hero">Menu</div>
+    </div>
+
+    <section id="dashboard">
+        <div class="side-nav">
+            <div class="profile">
+                <div id="time"></div>
+                <img src="/images/avatars/<%= avatar %>.svg" height="75px" alt="">
+                <h4>
+                    <%= username %>
+                </h4>
+            </div>
+            <ul class="contents">
+                <a href="/dashboard/favourites">
+                    <li>
+                        <ion-icon name="star-outline"></ion-icon>
+                        <div class="icon-text">Favourites</div>
+                    </li>
+                </a>
+                <a href="/dashboard/to-read">
+                    <li>
+                        <ion-icon name="stopwatch-outline"></ion-icon>
+                        <div class="icon-text">To Read</div>
+                    </li>
+                </a>
+                <a href="/dashboard/have-read">
+                    <li>
+                        <ion-icon name="file-tray-stacked-outline"></ion-icon>
+                        <div class="icon-text">Have Read</div>
+                    </li>
+                </a>
+                <a href="/dashboard/reading-now">
+                    <li>
+                        <ion-icon name="book-outline"></ion-icon>
+                        <div class="icon-text">Reading now</div>
+                    </li>
+                </a>
+                <a href="/dashboard/tags">
+                    <li>
+                        <ion-icon name="pricetags-outline"></ion-icon>
+                        <div class="icon-text">Tags</div>
+                    </li>
+                </a>
+                <a href="/profile/<%= username %>">
+                    <li>
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <div class="icon-text">My Profile</div>
+                    </li>
+                </a>
+            </ul>
+            <div class="settings">
+                <ul>
+                    <a href="/dashboard">
+                        <li class="active">
+                            <ion-icon name="library-outline"></ion-icon>
+                            <div class="icon-text">My Library</div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+
+        <div class="board">
+            <div class="preview">
+                <div class="text-box">
+                    <span>
+                        <% if (!self) { %> 
+                            <%= viewUsername %>'s Library
+                        <% } else { %>
+                        “You know you've read a good book when you turn the last page and feel a little as if you have lost a friend.”
+                        <% } %>
+                    </span><br><br>
+                    <% if (self) { %> 
+                    <div class="auth">~ Paul Sweeney</div>
+                    <% } %>
+                </div>
+                <img src="/images/book2.svg" alt="">
+            </div>
+
+            <div class="popup">
+                <div class="close-btn">
+                    <ion-icon name="close-outline"></ion-icon>
+                </div>
+                <form class="form" action="/add-book" method="POST">
+                    <div class="book-add">
+                        <div class="input">
+                            <span>Name of the book</span><br>
+                            <label for="book_name"></label>
+                            <input type="name" id="book_name" name="book_name" class="form-control" placeholder="eg. To Kill A Mocking Bird" value="<%= typeof book_name != 'undefined' ? book_name : '' %>" required/>
+                        </div>
+                        <div class="input">
+                            <span>Author(s)</span><br>
+                            <label for="author"></label>
+                            <input type="name" id="author" name="author" class="form-control" placeholder="eg. Harper Lee" value="<%= typeof author != 'undefined' ? author : '' %>" required/>
+                        </div>
+                        <div class="input">
+                            <span>Link to the book</span><br>
+                            <label for="book_link"></label>
+                            <input type="link" id="book_link" name="book_link" class="form-control" placeholder="eg. https://drive.google.com/file/..." value="<%= typeof book_cover != 'undefined' ? book_cover: '' %>" required/>
+                        </div>
+                        <div class="input">
+                            <span>Book Cover Link (Optional)</span><br>
+                            <label for="book_cover"></label>
+                            <input type="link" id="book_cover" name="book_cover" class="form-control" placeholder="eg. https://i.imgur.com/1NO47dH.png 300x220px" value="<%= typeof book_cover != 'undefined' ? book_cover: '' %>" />
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn ">Add</button>
+                </form>
+            </div>
+
+            <p class="temp1" style="display:none">
+                <%= books.length %>
+            </p>
+
+            <div class="shelf">
+                <h1><%= title %></h1>
+                <ul id="sortable">
+                    <% if (books.length) {
+                        %>
+                        <% books.forEach((book) => {
+                            %>
+                            <li class="book">
+                                <p class="image" style="display: none"><%= book.cover %> </p>
+                                <a class="book-link" href="<%= book.link %>" target="_blank">
+                                    <% if (self) { %>
+                                    <div class="book-overlay">
+                                        <div class="toolbar">
+
+                                            <div class="book-name"><%= book.name %></div>
+                                            <div class="forms">
+                                        
+                                                <form action="/edit-book" method="GET">
+                                                    <input type="hidden" name="book_id" class="book_id" value="<%= book._id %>">
+                                                    <button type="submit" title="Edit"><ion-icon name="color-wand-outline"></ion-icon></button>
+                                                </form>
+
+                                                <form action="/delete-book" method="POST">
+                                                    <input type="hidden" name="book_id" class="book_id" value="<%= book._id %>">
+                                                    <button type="submit" title="Delete"><ion-icon name="trash-outline"></ion-icon></button>
+                                                </form>
+
+                                            </div>
+                                            <div class="auth"><%= book.author %></div>
+
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                </a>
+                            </li>
+                            <% }) %>
+                    <% } %>
+                    <li class="book add">
+                        <div class="add-btn">
+                            Add
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <script src="/javascripts/script.js"></script>
+</body>
+
+</html>
