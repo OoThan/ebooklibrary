@@ -251,7 +251,7 @@ const renderProfile = async (req, res) => {
                 facebook: view.facebook,
                 twitter: view.twitter,
                 wattpad: view.wattpad,
-                self: true
+                self: false
             });
         }
     } catch (err) {
@@ -259,4 +259,191 @@ const renderProfile = async (req, res) => {
     }
 };
 
+const renderUserBook = async (req, res) => {
+    try {
+        const sessionToken = await req.cookies.token;
+        let user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } 
+        if (user.username == req.params.username) {
+            res.redirect('/dashboard')
+        } else {
+            const view = await User.findOne({ username: req.params.username });
+            const books = await Book.find({ user_id: view._id });
+            res.render('bashboard', { 
+                title: `${view.username}'s Books`,
+                username: user.username,
+                avatar: user.avatar,
+                viewUsername: view.username,
+                self: false,
+                books
+            });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
 
+const renderEditAvatar = async (req, res) => {
+    try {
+        const sessionToken = await req.cookies.token;
+        const user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } else {
+            res.render('avatar', {
+                username: user.username,
+                avatar: user.avatar,
+            });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+const editAvatar = async (req, res) => {
+    try {
+        const sessionToken = await req.cookies.token;
+        const user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } else {
+            if (req.body.avatar) user.avatar = req.body.avatar;
+            await user.save();
+            res.redirect('/dashboard');
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+const logout = async (req, res) => {
+    try {
+        const sessionToken = await req.cookies.token;
+        const user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } else {
+            user.sessionToken = 'null';
+            user.save();
+            res.redirect('/users/login');
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+const addBook = async (req, res) => {
+    try {
+        const sessionToken = await req.cookies.token;
+        const user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } else {
+            let cover = 'default';
+            if (req.body.book_cover) cover = req.body.book_cover;
+            const newBook = new Book({
+                name: req.body.book_name,
+                author: req.body.author,
+                link: req.body.book_link,
+                cover: cover,
+                user_id: String(user._id)
+            });
+            await newBook.save();
+            res.redirect('/dashboard');
+        }
+    } catch (err) {
+
+    }
+};
+
+const deleteBook = async (req, res) => {
+    try {
+        const sessionToken = await req.cookies.token;
+        const user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } else {
+            const book_id = req.body.book_id;
+            await Book.deleteOne({ _id: book_id, user_id: String(user._id) });
+            res.redirect('/dashboard');
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+const renderEditBook = async (req, res) => {
+    try {
+        const book_id = req.query.book_id;
+        const sessionToken = await req.cookies.token;
+        const user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } else {
+            const book = await Book.findOne({ _id: book_id, user_id: String(user._id) });
+            res.render('edit-book', { 
+                book_id: book._id,
+                book_name: book.name,
+                author: book.author,
+                book_link: book.link,
+                book_cover: book.cover,
+                book_favourite: book.favourite,
+                book_have_read: book.have_read,
+                book_reading_now: book.reading_now,
+                book_tags: book.tags,
+                username: user.username,
+                avatar: user.avatar
+            });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+const editBook = async (req, res) => {
+    try {
+        const sessionToken = await req.cookies.token;
+        const user = await User.findOne({ sessionToken: sessionToken });
+        if (!user || !sessionToken) {
+            res.redirect('/users/login');
+        } else {
+            const book_id = req.body.book_id;
+            let book = await Book.findOne({ _id: book_id, user_id: String(user._id) });
+            book.name = req.body.book_name;
+            book.author = req.body.author;
+            book.link = req.body.book_link;
+            book.cover = req.body.book_cover;
+            book.favourite = req.body.book_favourite;
+            book.have_read = req.body.book_have_read;
+            book.reading_now = req.body.book_reading_now;
+            const tags = req.body.book_tags.trim().split(",");
+            book.tags = tags;
+            await book.save();
+            res.redirect('/dashboard');
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+module.exports = {
+    renderIndex,
+    renderDashboard,
+    renderHaveRead,
+    renderToRead,
+    renderFavourites,
+    renderReadingNow,
+    renderAccount,
+    renderEditAvatar,
+    renderEditBook,
+    renderProfile,
+    renderUserBook,
+    logout,
+    addBook,
+    deleteBook,
+    editBook,
+    upload,
+    editAvatar,
+};
